@@ -132,7 +132,8 @@ def remove_package(name, version)
       "#{uninstall_string} /qn"
     else
       uninstall_string.gsub!('"','')
-      "start \"\" /wait /d\"#{::File.dirname(uninstall_string)}\" #{::File.basename(uninstall_string)}#{expand_options(@new_resource.options)} /S"
+      uninstall_string.gsub!(/\/repair/,'/uninstall')
+      "start \"\" /wait #{uninstall_string}#{expand_options(@new_resource.options)} /S"
     end
   end
   Chef::Log.info("Removing #{@new_resource} with uninstall command '#{uninstall_command}'")
